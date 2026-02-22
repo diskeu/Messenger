@@ -1,0 +1,389 @@
+# base repo with functions that can be used by other repos
+from __future__ import annotations
+from utils.type_helpers import check_type
+from utils.sql_helpers import format_value
+from types import GeneratorType
+from mysql.connector.errors import (
+    OperationalError,
+    IntegrityError,
+    ProgrammingError,
+    DatabaseError,
+    Error as MysqlBaseError
+)
+from Backend.App.Exceptions.DB_Exceptions import (
+    QuerySyntaxError,
+    ExistingAttributeError,
+    ModelError,
+    SqlReturnTypeError
+)
+from Backend.App.Models.base_model import BaseModel as Model
+from mysql.connector.connection import MySQLConnection
+from mysql.connector.cursor import MySQLCursor
+import inspect
+
+class BaseRepo():
+    """Base repo with helpers that can be used by other classes"""
+    def __init__(self, logger):
+        self.logger = logger
+
+    class RepoError():
+        """defining Repo error that'll get returned from handle_db_error"""
+        error_table: dict = {
+            1: MysqlBaseError,
+            2: DatabaseError,
+            3: ModelError,
+            4: OperationalError,
+            5: SqlReturnTypeError,
+            7: QuerySyntaxError,
+            8: ExistingAttributeError,
+            9: TypeError,
+            10: Exception # Any kind of exception
+        }
+        def __init__(self, succes: bool, error_code: int, message: str, exception: Exception):
+            self.succes = succes
+            self.error_code = error_code
+            self.message = message
+            self.exception = exception
+
+    def create_cursor_obj(self, cnx: MySQLConnection) -> MySQLCursor | RepoError:
+        """Given a Connection returns a cursor object or RepoError"""
+        # reconnecting to DB and defining cursor
+        if not cnx.is_connected(): cnx.reconnect()
+        try:
+            return cnx.cursor(dictionary=True)
+        except OperationalError as err:
+            return self.RepoError(
+                False,
+                4,
+                "Network / Timeout error",
+                err
+        )
+
+    def handle_db_error(self, err: Exception) -> RepoError:
+        """Handles common DB errors and returns RepoError"""
+
+        # logg exeption
+        self.logger.exception("Exception occured: %s", err)
+
+        # Value already exists
+        if isinstance(err, IntegrityError):
+            return self.RepoError(False, 8, "Attributes Already Exist", err)
+        
+        # Syntax Error
+        elif isinstance (err, ProgrammingError):
+            return self.RepoError(False, 7, "Syntax error in Query", err)
+        
+        # Network / Timeout error -> too many connections; a host name could not be resolved; bad handshake; server is shutting down, communication errors
+        elif isinstance(err, OperationalError):
+            return self.RepoError(False, 4, "Network / Timeout error", err)
+        
+        # DataBase errors
+        elif isinstance(err, DatabaseError):
+            return self.RepoError(False, 2, "Other DataBase Error", err)
+        
+        # Other Errors
+        else: return self.RepoError(False, 10, "Error -> check Exception for more info", err)
+
+    def get_info(self, model, table: str, primary_key: tuple[str, int], *columns: str) -> Model | RepoError:
+        """
+        Small help func, that builds an ORM for all major models, that need one primary key
+        
+        :param model: Model that should get returned, needs to be a class itself, not an instance
+        :model type: Model
+        :param table: table where columns get selected from
+        :table type: str
+        :primary_key: Primary Key that exactly indexes the row in format tuple(primary_key_name, primary_key)
+        :primary_key type: int
+        :columns: columns that should get returned
+        :columns type: str
+        :return: the specified model or RepoError
+        :rtype: model | RepoError
+        """
+        if type(primary_key[0]) != str or type(primary_key[1]) != int:
+            self.logger.warning(
+                "Wrong type of primary_key, "
+                "prefered type: tuple[str, int], "
+                f"given type: [{type(primary_key[0]), ",", type(primary_key[1])}"
+            )
+            return self.RepoError(
+                False,
+                9,
+                "Wrong type",
+                TypeError(
+                    "Wrong type of primary_key, "
+                    "prefered type: tuple[str, int], "
+                    f"given type: [{type(primary_key[0]), ",", type(primary_key[1])}"
+                )
+            )
+
+        # getting cursor
+        cursor = self.create_cursor_obj(self.cnx)
+
+        select_query = self.build_select_query(f"{table}", "WHERE %s = %s", *columns)
+
+        if isinstance(select_query, self.RepoError): return select_query
+
+        try:
+            cursor.execute(select_query, primary_key)
+            info: dict = cursor.fetchall()
+        except Exception as err:
+            self.logger.exception(
+                f"Something in cursor execution went wrong, returning RepoError"
+            )
+            return self.handle_db_error(err)
+
+        # defining model with the given sql return
+        if not info: return model
+        info_model: Model = self.create_model(info, model)
+        return info_model # returning model or RepoError
+
+
+
+    def build_select_query(self, table: str, other_statement: str = "", *columns: str) -> str:
+        """
+        Builds a SQL Query with the given columns
+        
+        :param columns: Columns to select
+        :colum type: str
+        :param other_statement: statemnt after set for example where, join, limit..., default is ""
+        :other_statement type: str
+        :param table: selecting from that table
+        :table type: str
+        :return: SQL Query
+        :rtype: str
+        """
+
+        # Building column statement
+        selected_columns = ", ".join(columns) if columns else "*"
+
+        # defining select_query
+        select_query: str = f"SELECT {selected_columns} FROM {table} "
+
+        # defining where statement
+        select_query += f"{other_statement};"
+
+        return select_query
+    
+    def build_insert_query(self, table: str, columns: list | GeneratorType, values: list[tuple]) -> str:
+        """
+        Builds a SQL-Insert-Query with the given columns and values
+        
+        :param table: table to insert the query
+        :type table: str
+        :param columns: columns where statement gets insertet
+        :type columns: list
+        :param values: values to insert, can be more than one, must be a list of tuples
+        values will be replaced with %s to prevent injections and can be later replaced
+        :type values: list[tuple]
+        :return: SQL Query
+        :rtype: str
+        """
+        # first statement
+        insert_query = f"INSERT INTO {table} "
+
+        # add additional columns
+        if columns: insert_query += f"({', '.join(columns)}) VALUES "
+
+        # defining section length's
+        value_section_count: int = len(values)  # get length of the values sections -> (val1, val2, val3...) = 1 section
+        values_count: int = len(values[0])      # len of every item in one section
+
+        # making output secure
+        # outputs something like (%s, %s, %s, %s, %s, %s, %s) * (count of all sections)
+        secure_item_section = ', '.join(['%s'] * values_count)                          # section like (%s, %s, %s, %s, %s, %s, %s)
+        secure_values = ", ".join(value_section_count * [f"({secure_item_section})"])   # whole secure section
+
+        # adding secure_values and end of query statement
+        insert_query += secure_values
+        insert_query += ";"
+
+        return insert_query
+    
+    def build_update_query(self, table: str, update_val: dict, other_statement: str) -> tuple[str, list]:
+        """
+        Builds a sql update query with the given table, update values and where statement
+        example -> build_update_query("users", {"user_name": "x", "user_email": "user@mail.com"}, "user_id = %s")
+
+        :param table: table where statement gets executed
+        :type table: str
+        :param update_val: dictionary in format {parm: new_val, ...}
+        :type update_val: dict
+        :param other_statement: statemnt after set for example where, join...
+        :other_statement type: str
+        :return: SQL Query in format UPDATE {table} SET user_name = %s WHERE user_id = %s
+        Will return a tuple of the SQL Query and a list with the values that can later replace the %s placeholders
+        :rtype: tuple[str, list]
+        """
+
+        update_query: list = [f"UPDATE {table} SET"] # index = 1
+
+        set_statement: list = []
+        values: list = []
+
+        for k, v in update_val.items():
+            set_statement.append(f"{k} = %s")
+            values.append(v)
+
+        # adding set statement
+        update_query.append(", ".join(set_statement))
+
+        # adding where statement
+        update_query.append(f"{other_statement};")
+        return " ".join(update_query), values
+
+    def build_delete_query(self, table: str, condition: str) -> str:
+        """
+        Builds a sql delete query with the given table and the last condition
+        example -> build_delete_query("users", "WHERE user_id = 2")
+
+        :param table: table where statement gets executed
+        :type table: str
+        :param condition: last condition for example, where, join, limit...
+        :type condition: str
+        :return: sql query
+        :rtype: str
+        """
+        # for example DELETE FROM table_name WHERE condition;
+        return f"DELETE FROM {table} {condition};"
+
+    def create_model(self, sql_return: list, model: object) -> object | RepoError:
+        """
+        Unpacks the given list from the sql return and returns a Model or RepoError
+        
+        :param sql_return: the return from the sql select statement
+        :type sql_return: list
+        :param model: the class of the model that gets returned
+        :type model: object
+        :return: instance of the model class or RepoError
+        :rtype: object | RepoError
+        """
+
+        # unpacking list
+        if sql_return != []:
+            sql_values: dict = sql_return[0]
+            if type(sql_values) != dict:
+                self.logger.warning(
+                "Wrong type of sql_return, "
+                "prefered type: dict, "
+                f"given type: {type(sql_return)}"
+            )
+                return self.RepoError(
+                    False,
+                    5,
+                    "Wrong type of sql_return",
+                    SqlReturnTypeError(
+                        "Wrong type of sql_return, "
+                        "prefered type: dict, "
+                        f"given type: {type(sql_return)}"
+                    )
+                )
+
+        else:
+            self.logger.info("Parsed an empty list!")
+            return model
+
+        # check if model is instance or class
+        if not isinstance(model, type):
+            self.logger.warning("Model is instance not class")
+            return self.RepoError(
+                False,
+                3,
+                "Model is instance not class",
+                ModelError("Model is an instance of an class, not class itself")
+            )
+        
+        # inspecting how many param the func takes
+        len_call_signature = len(inspect.signature(model.__init__).parameters) - 1 # len of the param - self
+
+        default_parm: list = [-1 for _ in range(len_call_signature)]               # -1 as a default value for not specified parm
+
+        temp_model = model(*default_parm)                                          # initalising the model with the default parmeters
+
+        # getting the attributes of temp_model
+        for k, v in sql_values.items():
+
+            temp_model_signature_parm = inspect.signature(temp_model.__init__).parameters
+            if k in temp_model_signature_parm:
+
+                # if the value of v has the same annotation as the model
+                if type(v) in check_type(temp_model_signature_parm[k].annotation):
+                    temp_model.__setattr__(k, v)                                    # setting attributes of model instance
+                else:
+                    self.logger.warning(f"Value '{k}'[{v}] hasn't the same annotation as specified in {model}")
+                    return self.RepoError(
+                        False,
+                        3,
+                        "Model-annotation Error",
+                        ModelError(f"Value '{k}'[{v}] hasn't the same annotation as specified in {model}")
+                    )
+            else:
+                self.logger.warning(f"Param {k} doesn't exist in {model}")
+                return self.RepoError(
+                    False,
+                    3,
+                    "Missing parm",
+                    ModelError(f"Parameter {k} doesn't exist in {model}")
+                )
+            
+        return temp_model
+
+    def check_model_validity(self, *models) -> RepoError | object:
+        """
+        Checks if models are of the same instance and no class itself
+        
+        :param models: models to check
+        :return: RepoError if *models is not valid else class from where all models inherit
+        :rtype: RepoError | object
+        """
+        if not models:
+            self.logger.warning("No model defined")
+            return self.RepoError(
+                False,
+                3, "No model defined",
+                ModelError("No model defined")
+            )
+        # definining model types
+        model_types: set = {
+            model.__class__
+            if not isinstance(model, type)
+            else TypeError
+            for model in models
+        }
+        # checking if every model is instance of the same class
+        if len(model_types) != 1 or TypeError in model_types:
+            self.logger.warning("Every model in *models must be instance from the same class ")
+            return self.RepoError(
+                False,
+                3,
+                "Models must be instances of the same class",
+                ModelError("Every model in *models must be instance from the same class ")
+            )
+        
+        return model_types.pop()
+
+    def get_columns_values(self, *models) -> tuple[GeneratorType, list] | RepoError:
+        """
+        Given user models, returns the models columns and values
+        
+        :param models: models (must be instances of the same class)
+        :return: returns columns[GeneratorType] and values[list] or RepoError if an error ocurred
+        :rtype: tuple[GeneratorType, list] | RepoError
+        """
+        base_class = self.check_model_validity(*models)
+        if isinstance(base_class, self.RepoError): return base_class # returning RepoError
+        
+        # defining column
+        model_parm = inspect.signature(base_class.__init__).parameters
+        columns: GeneratorType = (model for model in model_parm if model != "self") # removing self
+        
+        # getting values from models
+        values_items = []
+        for model in models:
+            # defining values
+            attributes = (
+                format_value(model.__getattribute__(parm)) # calling function with value of the parm
+                for parm in model_parm
+                if parm != "self"
+            )
+            values_items.append(tuple(attributes))
+        return columns, values_items

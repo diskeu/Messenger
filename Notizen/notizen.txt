@@ -1,0 +1,287 @@
+__________________________________________________________________________________________________________________________________________________________________
+Sockets
+
+Python Socket modul hohlt mit recv nur daten vom socket und mit send schreibt es nur daten in den socket puffer.
+Nezwerkkarte / OS versendet wirklich die daten und legt sie in den puffer
+__________________________________________________________________________________________________________________________________________________________________
+Asgi / Nginx
+
+Browser / Client schickt HTTP(s) Requests
+
+Jeder Socket hat zwei Socket Puffer
+    Send Puffer
+        hier legen programme die Daten hinein die versendet werden sollen und der Kernel nimmt sie und versendet sie
+    Recv Puffer
+        hier legt der Kernel / Nezwerkkarte die Daten hinein und die programme lesen sie von dort
+
+    Intern ist es ein Ring Puffer FIFO mit Fester größe
+        Bytes werden in der Reihenfolge gelesen / verschickt wie sie ankommen
+        wenn der Send Puffer voll ist muss gewartet werden bevor neue Bytes reinkommen können
+        wenn der Recv Puffer voll ist werden die Reuqests / Responses verworfen oder der Client wird gebremst (Flow Control)
+        Jeder Socket wird durch ein Tuple gekennzeichnet mit (Client IP, CLient Port, Server IP, Server Port),
+        damit kann das OS genau wissen welche Bytes zu wem gehören
+    Ablauf Recv
+        TCP paket kommt an der Netzwerkkarte an. Netzwerkkarte übergibt das Paket an den Kernel
+        Der Kernel schaut auf Ziel IP, Ziel Port und Quell IP, Quell Port und legt die Daten in den Richtigen Recv Puffer des entsprechenden Sockets
+    Ablauf Send
+        Der Kernel weis mit Destination Port an welchen Client sie geschickt werden müssen
+        Der Kernel zerlegt die daten in einzelne TCP Pakete und numeriert sie mit Squenze nummer
+        Der Client kann die Daten richtig zusammensetzen auch wenn sie in einzelnen Pakten ankommen
+
+    Die Bytes eines Clients landen im entsprechenden Puffer des jeweiligen Sockets nicht in globalen puffer
+    Wenn man in Python ein Socket objekt öffnet representiert das genau eine Verbindung
+    client_sock, addr = server.accept()  # neues Socket für jeden Client
+    data = client_sock.recv(1024)       # liest nur aus diesem Client-Socket
+
+
+Client Device   \                                               /    Server
+                 Forward Proxy -> Internet -> Reverse Proxy
+Client Device   /                                               \    Server
+
+Ein Proxy ist ein Server der als mittelsmann dient
+    Forward Proxy verwaltet von den Clients ausgehende Daten zum Internet, er ist mittelsmann und verwaltet anfragen zum internet,
+    da er als mittelsmann gilt wird seine Ip adresse an den Server weitergegeben und er kann wie ein VPN funktionieren,
+    der reverse proxy befindet sich an der stelle des Servers, der Reverse Proxy nimmt bei einer sendung eines clients die anfrage zuerst entgegen,
+    bevor er sie an den Entsprechenden Server weiterleited, der reverse proxy macht lastverteilung und verteilt anfragen gleichmäßig auf die server,
+    sodass nicht so schnell eine Überlastung entsteht
+
+Die Nezwerkkarte / Os - Kernel hohlt wirklich die daten vom OS - Socket puffer und versendet sie
+Nginx Asgi legen / hohlen nur daten vom Puffer
+
+Nginx ->
+    entscheidet welche Bytes welchem Client gehören
+    macht TLS verschlüsselung
+    Nimmt TCP Verbindungen vom client entgegen
+    handhabt TLS / HTTPS
+    Er liest Header und kann Request Parsen
+    Macht load Balancing, Rate Limiting, Security
+
+Asgi ->
+    Schnittstelle zwischen Webserver (Nginx) und Python Web App
+    Asgi Server -> Uvicorn
+    Nimmt Request vom socket Nginx entgegen
+    Baut Scope -> Header, Body, Methode, Pfad
+    Führt die Python App aus
+    schreibt die response zurück in den Puffer -> nginx nimmt von puffer
+
+Browser → Nginx = TCP-Verbindung #1 → hat eigenen Send- und Receive-Puffer
+Nginx → ASGI = TCP-Verbindung #2 → hat eigenen Send- und Receive-Puffer
+
+Ohne Nginx -> es gibt kein Load Balancing, man muss TLS selbst implementieren
+
+Nginx nutzt event-driven / epoll / kqueue → arbeitet asynchron auf OS-Level
+Nginx blockiert keinen Thread, auch wenn es in den Puffer schreibt
+
+mit asgi und nginx gibt es ein socket für nginx und ein socket für asgi wo nginx sachen reinschreibt
+
+Fast api übernimmt dann
+
+	1.	Routing / Endpunkte:
+	•	/users → get_users()
+	•	/login → login_user()
+	2.	Request-Parsing & Validation:
+	•	JSON-Body automatisch in Python-Objekte parsen
+	•	Query-Parameter, Path-Parameter validieren
+	•	Daten-Typen checken (z. B. int, str, Pydantic-Modelle)
+	3.	Response-Erstellung:
+	•	Serialisierung von Python-Objekten → JSON
+	•	HTTP-Statuscodes setzen
+	•	Headers setzen
+	4.	Middleware / Features:
+	•	Authentifizierung / Authorization
+	•	Logging
+	•	CORS / Security-Header
+	•	Event Hooks (z. B. startup/shutdown)
+	5.	Integration mit Async I/O:
+	•	Async-DB-Abfragen, API-Calls, Tasks → nutzt await innerhalb des ASGI-Scopes
+es macht kein schreiben entgegennehmen aus sockets, das übernimmt asgi und nginx
+Fast api definiert die Routen, während Asgi die Routen aufruft
+
+Fast api nutzt starlette
+    es definiert in einer Tabelle welche Route welche Funktion aufruft / welchen Handler hat
+    "/users" -> Handler(get_users)
+    "/login" -> Handler(login_user)
+    wenn eine request kommt ruft fast api den passenden handler anhand der route auf
+
+Fast api nutzt Pydantic für die Request validierung > man muss daher keinen parsing code schreiben
+    wenn client request schickt zb
+        {
+        "name": "Alice",
+        "age": 25
+        }
+    dann muss fast api sicherstellen das alle Felder vorhanden sind und die felder den richtigen typ haben, default werte z.B. maxlen prüfen
+    Fast api nutzt pydantic dafür, pydantic definiert die Datenstrukur
+        Python hat Type Hints z.B. def foo(x: int)
+        Pydantic liest __annotations__ aus
+
+            _____________________python______________________________________
+            |   from pydantic import BaseModel                              |
+            |                                                               |
+            |   class User(BaseModel):                                      |
+            |       name: str                                               |
+            |       age: int                                                |
+            |                                                               |
+            |                                                               |
+            |   from fastapi import FastAPI                                 |
+            |                                                               |
+            |   app = FastAPI()                                             |
+            |                                                               |
+            |   @app.post("/users")                                         |
+            |   async def create_user(user: User):                          |
+            |       return {"message": f"Hello {user.name}, age {user.age}"}|
+            ________________________________________________________________
+
+        Pydantic liest User.__annotations__ aus
+        {'name': <class 'str'>, 'age': <class 'int'>}
+        Pydantic prüft damit ob wenn eine request kommt ob name str ist und age int
+        BaseModel ist die Baisklasse in pydantic von der alle klassen erben
+            danach hat user automatisch validierung, konventierung "25" -> 25, methoden wie dict und copy
+            Funktionen von BaseModel
+                __init__            prüft automatisch die validierungen
+                dict()              Wandelt das Model in ein Python-Dict
+                json()              Wandelt das Model in JSON
+                parse_obj()         Erstellt Model aus Dict / JSON / Nested-Objekten
+                copy()              Kopiert das Model (optional Änderungen)
+            wenn in python eine klasse erbt und keinn __init__ hat wird automatisch das init der elternklasse aufgerufen
+            es ruft automatisch danach das __init__ von BaseModel auf
+            BaseModel setzt dann die attribute automatisch
+            bei user = User(2) wird die 2 dem __init__ der Parent klasse übergeben, da kein __init__ bei der child klasse definiert wurde
+            **kwargs -> übernimmt nur keyword argumente -> key mit value und baut daraus dann dict
+            *args -> übernimmt nur positional argumente und baut daraus tuple
+
+            self ist immer das objekt das gerade erzeugt wird
+            bei c = child() erzeugt python zuerst ein objekt vom typ child, danach wird init aufgerufen
+            da child kein eigenes init hat wird das init der elternklasse automatisch mit den argumenten die im __init__ des Parents definiert wurden aufgerufen,
+            daher wird der parent mit self aufgerufen. Das self ist nun das self der child klasse und das parent hat zugriff auf die attribute der child klasse,
+            also auch auf die __annotations__
+            um die __annotations__ der child klasse zu bekommen muss man auf self und dann auf die klasse und von der klasse auf die __annotations__ zugreifen
+            da das init des Basemodel auch alle kwargs entgegennimmt kann es prüfen ob im dict von kwargs die keys den keys von den __annotations__ entsprechen
+            im init vom BaseModel kann man dann self bei allen field_names zu dem value im kwargs dict setzen,
+            danach hat man auf der childklasse zugriff auf alle attribute die beim erstellen gesetzt wurden
+
+            Jede Python-Funktion hat intern ein Code-Objekt (__code__) und Annotations (__annotations__):
+            Fast api erkennt mit inspect.signature das user eine klasse von User sein soll
+            sig = inspect.signature(create_user)
+            print(sig.parameters["user"].annotation)
+
+            request.josn() liefert json in dict format
+
+            sig.parameters.items() -> liefert den namen des parameter und die annotation des parameter
+
+            Fast api erkennt bei def create_user(user: User) das user ein pydantic model ist mit User.issubclass(BaseModel)
+            es macht dann automatisch
+            user = User(**request.json())  # dynamische Instanz aus JSON
+
+# FastAPI selbst ist ein ASGI-Callable
+app = FastAPI()
+
+# ASGI-Server ruft
+await app(scope, receive, send)  # <- hier kommt der Request an
+
+# FastAPI prüft scope & Body, baut Pydantic-Objekte
+user_obj = User(**request.json())
+
+# FastAPI ruft deinen Endpoint
+response = await create_user(user_obj)
+
+# Antwort zurück zum ASGI-Server, der sie an Client sendet
+
+
+Fast api nimmt das ergebniss des return des Handlers und macht sie Asgi kompatibel -> konventiert in json usw. es gibt await send dann an den Asgi Server
+Fast api selbst kann auch die handler asynchron aufrufen
+__________________________________________________________________________________________________________________________________________________________________
+@app.post("/users/")
+async def create_user(user: User):
+    return user
+
+@app.post("/users/") ist eigentlich ein Decorator, der Folgendes macht:
+
+Ohne decorator
+async def create_user(user: User):
+    return user
+app.post("/users/")(create_user)
+
+die funktion app.post wird mit "/users/" aufgerufen und returnt eine funktion dei eine funktion als argument braucht
+
+Decorator
+man fügt etwas zu einer base funktion hinzu ohne die funktion zu ändern
+def add_sprinkles(func):
+    def wrapper():
+        func()
+    return wrapper
+
+normalerweise müsste man add_sprinkles(func)() machen mit decorator
+class App():
+    def post(self, path: str):
+        def call_handler(handler: callable):
+            print("Making route", path)
+            print("registered", handler)
+        return call_handler
+    
+app = App()
+@app.post("/users/")
+def create_user(user: str):
+    return
+# create_user = app.post("/users/")(create_user)
+__________________________________________________________________________________________________________________________________________________________________
+Uvicorn ruft die fast api routen auf
+Uvicorn lässt einmal das komplette python programm durchlaufen und registriert die routen
+Uvicorn ist in einer schleife und bei jeder request ruft es die richtige route auf
+import main          # dein Code läuft EINMAL
+app = main.app       # FastAPI-Objekt
+uvicorn.run(app)     # HIER beginnt die Endlosschleife
+bei jedem decorator wird die route registriert
+__________________________________________________________________________________________________________________________________________________________________
+MySQL Connector/Python
+MySQL Connector/Python enables Python programs to access MySQL databases, using an API that is compliant with the Python Database API Specification v2.0 (PEP 249).
+__________________________________________________________________________________________________________________________________________________________________
+SUDO rm -rf
+rm = entfernen
+
+r = rekursiv, z. B. alle Dateien und Ordner
+
+f = erzwingen, z. B. keine Bestätigung
+__________________________________________________________________________________________________________________________________________________________________
+Projektstrukur
+
+Backend -> serverlogik
+Routes -> Fast api Routes
+Models -> Blaupausen für Daten, enthalten keine komplexe logik wie auf spam achten usw, kann auch hilfsfunktionen wie convert to json enhtalten
+Services -> enthält die logik nimmt zb funktion die etwas in db schreibt aber prüft zuerst auf spam
+__________________________________________________________________________________________________________________________________________________________________
+last seen funktion
+über websockets wird sobald ein client verbindung aufbaut der last seen status auf aktiv geschaltet,
+sobald die verbindung geschlossen wird wird es auf den jetzigen zeitpunkt gesetzt,
+sobald ein user in den chat eines kontaktes geht wird der last_seen status des benutzers abgefragt,
+wenn der user den zeitstempel ausschaltet wird last_seen auf NULL gesetzt
+__________________________________________________________________________________________________________________________________________________________________
+Wenn in Flyway ein fehler in der migration ist bricht die ganze migration ab und flyway merkt sich das die migration abgebrochen ist
+-- -- Notifications Table
+-- CREATE TABLE IF NOT EXISTS notifications (
+--     notification_id INT AUTO_INCREMENT,
+--     user_id INT NOT NULL,
+--     notification_title VARCHAR(255) NOT NULL,
+--     notification_content VARCHAR(512) NOT NULL,
+--     is_read BOOLEAN DEFAULT FALSE,
+--     created_at TIMESTAMP DEFAULT TIMESTAMP,
+--     PRIMARY KEY (notification_id),
+--     FOREIGN KEY (user_id) REFERENCES users(user_id)
+--         ON DELETE CASCADE
+-- )
+-- ;
+__________________________________________________________________________________________________________________________________________________________________
+Logger
+organisierte version von print mit levels, dateien usw.
+logger = logging.getLogger(name) -> macht einen logger mit dem bestimmten namen, wenn kein name festegelt wird ist es automatisch der root logger
+wenn man nichts konfiguriert erstellt python einen default root logger im hintergrund
+logger.basic_config(level=logging.INFO) es richter automatisch level, handler -> konsole und format ein 
+logger funktioniert nur beim ersten aufruf, wenn davor schon ein logger konfiguriert wurde funktioniert es nichtmehr
+man kann logging.warning immer ausführen egal welches level der logger hat, aber die nachricht wird nicht immer ausgegeben
+ein loggger kann verschiedene handler haben, default hat er none
+handler entscheidet was mit den logs passiert
+format entscheidet wie die ausgabe aussieht, default ist "%(message)s"
+In Python-Logging gibt es zwei Filterstufen: Logger  →  Handler  →  ausgabe
+man kann auch eine eigene format klasse machen indem man von logger.formatter erbt
+exception hat im unterschied zu error nicht nur eine message sondern beinhaltet auch den stacktrace
+DEBUG < INFO < WARNING < ERROR < CRITICAL
+%( -> start eines logs -> name eines logs -> )s als string einsetzen

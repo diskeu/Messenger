@@ -1,0 +1,282 @@
+2026-02-16 18:13:06,428 | ERROR | __main__ | Wrong password
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 91, in connect
+    cnx = mysql.connector.connect(**confg)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-16 18:14:28,308 | ERROR | __main__ | Wrong password
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'roots'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 91, in connect
+    cnx = mysql.connector.connect(**confg)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'roots'@'localhost' (using password: YES)
+2026-02-20 13:05:45,202 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:06:24,107 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:06:35,908 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:42:57,678 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:44:17,157 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:47:36,067 | ERROR | Backend.App.Database.connection | Database does not exist
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on '127.0.0.1:3302' (61)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3302' (61)
+2026-02-20 14:39:49,407 | ERROR | Backend.App.Database.connection | Database does not exist
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on '127.0.0.1:3302' (61)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 94, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3302' (61)
+2026-02-20 14:52:10,785 | ERROR | Backend.App.Database.connection | Database does not exist
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on '127.0.0.2:3302' (60)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 94, in connect
+    cnx = mysql.connector.connect(connection_timeout=3, read_timeout=8, write_timeout=8, **confg)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on '127.0.0.2:3302' (60)
+2026-02-20 14:53:20,313 | ERROR | Backend.App.Database.connection | Database does not exist
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on '127.0.0.2:3302' (60)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 94, in connect
+    cnx = mysql.connector.connect(connection_timeout=1, read_timeout=8, write_timeout=8, **confg)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on '127.0.0.2:3302' (60)

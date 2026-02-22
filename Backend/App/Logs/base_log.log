@@ -1,0 +1,1536 @@
+2026-02-16 20:59:59,402 | WARNING | root | Wrong type user_id of type <class 'list'>
+2026-02-16 21:01:30,762 | WARNING | root | Wrong type user_id of type <class 'list'>
+2026-02-16 21:02:50,860 | ERROR | root | Could not process parameters: int(21), it must be of type list, tuple or dict
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 18, in get_user_info
+    cursor.execute(query, (21))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 328, in execute
+    prepared = self._connection.prepare_for_mysql(params)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 957, in prepare_for_mysql
+    raise ProgrammingError(
+    ...<2 lines>...
+    )
+mysql.connector.errors.ProgrammingError: Could not process parameters: int(21), it must be of type list, tuple or dict
+2026-02-16 21:04:07,667 | ERROR | root | Could not process parameters: int(21), it must be of type list, tuple or dict
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 18, in get_user_info
+    cursor.execute(query, (21))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 328, in execute
+    prepared = self._connection.prepare_for_mysql(params)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 957, in prepare_for_mysql
+    raise ProgrammingError(
+    ...<2 lines>...
+    )
+mysql.connector.errors.ProgrammingError: Could not process parameters: int(21), it must be of type list, tuple or dict
+2026-02-16 21:05:06,565 | ERROR | root | expected string or bytes-like object, got 'tuple'
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 18, in get_user_info
+    cursor.execute(query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 333, in execute
+    stmt = RE_PY_PARAM.sub(psub, stmt)
+TypeError: expected string or bytes-like object, got 'tuple'
+2026-02-16 21:06:03,241 | ERROR | root | expected string or bytes-like object, got 'tuple'
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 19, in get_user_info
+    cursor.execute(query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 333, in execute
+    stmt = RE_PY_PARAM.sub(psub, stmt)
+TypeError: expected string or bytes-like object, got 'tuple'
+2026-02-16 21:06:15,675 | ERROR | root | 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 12' at line 1
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 12' at line 1
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 19, in get_user_info
+    cursor.execute(query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 12' at line 1
+2026-02-18 14:26:07,537 | WARNING | root | Wrong type user_id of type <class 'str'>
+2026-02-18 14:55:35,150 | ERROR | root | 1046 (3D000): No database selected
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: No database selected
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 42, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1046 (3D000): No database selected
+2026-02-18 14:56:09,798 | ERROR | root | 1054 (42S22): Unknown column 'emaild' in 'field list'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'emaild' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 42, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'emaild' in 'field list'
+2026-02-18 15:02:50,731 | ERROR | root | 1054 (42S22): Unknown column 'emaild' in 'field list'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'emaild' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 45, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'emaild' in 'field list'
+2026-02-18 15:05:49,668 | ERROR | root | 1054 (42S22): Unknown column 'emaild' in 'field list'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'emaild' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 50, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'emaild' in 'field list'
+2026-02-18 15:13:38,901 | ERROR | root | 1054 (42S22): Unknown column 'emaild' in 'field list'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'emaild' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 61, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'emaild' in 'field list'
+2026-02-18 15:15:18,058 | ERROR | root | 1054 (42S22): Unknown column 'emaild' in 'field list'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'emaild' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 61, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'emaild' in 'field list'
+2026-02-18 15:30:49,138 | ERROR | root | 1054 (42S22): Unknown column 'emaild' in 'field list'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'emaild' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 61, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'emaild' in 'field list'
+2026-02-18 15:31:21,254 | ERROR | root | 1054 (42S22): Unknown column 'emaild' in 'field list'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'emaild' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 62, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'emaild' in 'field list'
+2026-02-18 15:32:19,140 | ERROR | root | 1054 (42S22): Unknown column 'emaild' in 'field list'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'emaild' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 63, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'emaild' in 'field list'
+2026-02-18 15:33:07,241 | ERROR | root | 1054 (42S22): Unknown column 'emaild' in 'field list'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'emaild' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 63, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'emaild' in 'field list'
+2026-02-18 16:11:49,028 | ERROR | root | 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 1000' at line 1
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 1000' at line 1
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 69, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 1000' at line 1
+2026-02-18 16:12:41,057 | ERROR | root | 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 1000' at line 1
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 1000' at line 1
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 70, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= 1000' at line 1
+2026-02-18 18:22:53,706 | WARNING | root | Param user_id doesn't exist in <Name 0> <Id 0>
+2026-02-18 18:23:17,334 | WARNING | root | Param user_id doesn't exist in <class 'Backend.App.Models.user.user'>
+2026-02-18 18:36:43,056 | WARNING | root | Value Test hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 12:07:41,231 | WARNING | root | <class 'Backend.App.Models.user.user'> is a class itself and no instance of a model
+2026-02-19 12:07:41,231 | WARNING | root | <class 'Backend.App.Models.user.user'> is a class itself and no instance of a model
+2026-02-19 12:08:10,591 | WARNING | root | <class 'Backend.App.Models.user.user'> is a class itself and no instance of a model
+2026-02-19 12:08:10,591 | WARNING | root | <class 'Backend.App.Models.user.user'> is a class itself and no instance of a model
+2026-02-19 12:48:16,282 | WARNING | root | Every model in *models must be instance from the same class
+2026-02-19 12:48:16,282 | WARNING | root | Every model in *models must be instance from the same class
+2026-02-19 12:48:17,594 | WARNING | root | <class 'ValueError'> is a class itself and no instance of a model
+2026-02-19 12:48:17,594 | WARNING | root | <class 'ValueError'> is a class itself and no instance of a model
+2026-02-19 12:59:33,870 | WARNING | root | Every model in *models must be instance from the same class 
+2026-02-19 12:59:33,870 | WARNING | root | Every model in *models must be instance from the same class 
+2026-02-19 12:59:44,209 | WARNING | root | Every model in *models must be an instance of a model
+2026-02-19 12:59:44,209 | WARNING | root | Every model in *models must be an instance of a model
+2026-02-19 13:48:53,930 | ERROR | root | cannot access local variable 'cursor' where it is not associated with a value
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 31, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ^^^^^^
+UnboundLocalError: cannot access local variable 'cursor' where it is not associated with a value
+2026-02-19 13:48:53,930 | ERROR | root | cannot access local variable 'cursor' where it is not associated with a value
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 31, in get_user_info
+    cursor.execute(select_query, (user_id, ))
+    ^^^^^^
+UnboundLocalError: cannot access local variable 'cursor' where it is not associated with a value
+2026-02-19 17:19:26,934 | WARNING | root | Value None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:19:26,934 | WARNING | root | Value None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:21:07,331 | WARNING | root | Value last_seen - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:21:07,331 | WARNING | root | Value last_seen - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:21:18,179 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:21:18,179 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:23:25,303 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:23:25,303 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:23:41,663 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:23:41,663 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:24:21,428 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:24:21,428 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:29:52,138 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:29:52,138 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:55:46,511 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:55:46,511 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:56:14,639 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:56:14,639 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:57:51,901 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:57:51,901 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:58:43,161 | WARNING | root | Warning
+2026-02-19 17:58:43,223 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:58:43,223 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:59:00,637 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:59:00,637 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:59:28,985 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 17:59:28,985 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:01:05,132 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:01:05,132 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:01:18,456 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:01:18,456 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:03:37,724 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:03:37,724 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:04:55,716 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:04:55,716 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:05:22,787 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:05:22,787 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:06:50,935 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:06:50,935 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:33:44,307 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:33:44,307 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:34:23,388 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:34:23,388 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:34:56,973 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:34:56,973 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:36:06,195 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:36:06,195 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:36:32,976 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:36:32,976 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:37:03,362 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:37:03,362 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:38:43,485 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:38:43,485 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:40:04,424 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:40:04,424 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:40:30,279 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:40:30,279 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:40:41,657 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:40:41,657 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:42:01,213 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:42:01,213 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:42:18,693 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:42:18,693 | WARNING | root | Value 'last_seen' - None hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:43:04,227 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:43:04,227 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:43:23,658 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:43:23,658 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:43:56,904 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:43:56,904 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:45:31,181 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:45:31,181 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:45:46,144 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 18:45:46,144 | WARNING | root | Value 'user_id' - 1000 hasn't the same annotation as specified in <class 'Backend.App.Models.user.user'>
+2026-02-19 19:38:40,119 | WARNING | root | Parsed an empty List!
+2026-02-19 19:38:40,119 | WARNING | root | Parsed an empty List!
+2026-02-19 19:38:40,127 | WARNING | root | Parsed an empty List!
+2026-02-19 19:38:40,127 | WARNING | root | Parsed an empty List!
+2026-02-19 20:26:37,455 | ERROR | root | Wrong Syntax in query
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INSEsRT INTO messenger.users (user_id, user_name, hashed_password, email, create' at line 1
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 96, in post_user
+    cursor.execute(insert_query, flat_values) # replaces %s with actual values
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INSEsRT INTO messenger.users (user_id, user_name, hashed_password, email, create' at line 1
+2026-02-19 20:26:37,455 | ERROR | root | Wrong Syntax in query
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INSEsRT INTO messenger.users (user_id, user_name, hashed_password, email, create' at line 1
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 96, in post_user
+    cursor.execute(insert_query, flat_values) # replaces %s with actual values
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INSEsRT INTO messenger.users (user_id, user_name, hashed_password, email, create' at line 1
+2026-02-20 13:01:28,293 | ERROR | root | Exception 'CMySQLCursorDict' object has no attribute 'commit'
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 109, in post_user
+    cursor.commit()
+    ^^^^^^^^^^^^^
+AttributeError: 'CMySQLCursorDict' object has no attribute 'commit'
+2026-02-20 13:01:28,293 | ERROR | root | Exception 'CMySQLCursorDict' object has no attribute 'commit'
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 109, in post_user
+    cursor.commit()
+    ^^^^^^^^^^^^^
+AttributeError: 'CMySQLCursorDict' object has no attribute 'commit'
+2026-02-20 13:05:45,202 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:05:45,202 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:06:24,107 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:06:24,107 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:06:35,908 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:06:35,908 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:42:57,678 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:42:57,678 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:44:17,157 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:44:17,157 | ERROR | Backend.App.Database.connection | Wrong Username or Password
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Access denied for user 'root'@'localhost' (using password: YES)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+2026-02-20 13:47:36,067 | ERROR | Backend.App.Database.connection | Database does not exist
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on '127.0.0.1:3302' (61)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3302' (61)
+2026-02-20 13:47:36,067 | ERROR | Backend.App.Database.connection | Database does not exist
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on '127.0.0.1:3302' (61)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 93, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3302' (61)
+2026-02-20 14:39:49,407 | ERROR | Backend.App.Database.connection | Database does not exist
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on '127.0.0.1:3302' (61)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 94, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3302' (61)
+2026-02-20 14:39:49,407 | ERROR | Backend.App.Database.connection | Database does not exist
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on '127.0.0.1:3302' (61)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 94, in connect
+    return mysql.connector.connect(**confg)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on '127.0.0.1:3302' (61)
+2026-02-20 14:52:10,785 | ERROR | Backend.App.Database.connection | Database does not exist
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on '127.0.0.2:3302' (60)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 94, in connect
+    cnx = mysql.connector.connect(connection_timeout=3, read_timeout=8, write_timeout=8, **confg)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on '127.0.0.2:3302' (60)
+2026-02-20 14:52:10,785 | ERROR | Backend.App.Database.connection | Database does not exist
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on '127.0.0.2:3302' (60)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 94, in connect
+    cnx = mysql.connector.connect(connection_timeout=3, read_timeout=8, write_timeout=8, **confg)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on '127.0.0.2:3302' (60)
+2026-02-20 14:53:20,313 | ERROR | Backend.App.Database.connection | Database does not exist
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on '127.0.0.2:3302' (60)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 94, in connect
+    cnx = mysql.connector.connect(connection_timeout=1, read_timeout=8, write_timeout=8, **confg)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on '127.0.0.2:3302' (60)
+2026-02-20 14:53:20,313 | ERROR | Backend.App.Database.connection | Database does not exist
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 354, in _open_connection
+    self._cmysql.connect(**cnx_kwargs)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+_mysql_connector.MySQLInterfaceError: Can't connect to MySQL server on '127.0.0.2:3302' (60)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Database/connection.py", line 94, in connect
+    cnx = mysql.connector.connect(connection_timeout=1, read_timeout=8, write_timeout=8, **confg)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/pooling.py", line 322, in connect
+    return CMySQLConnection(*args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 142, in __init__
+    self.connect(**kwargs)
+    ~~~~~~~~~~~~^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/abstracts.py", line 1604, in connect
+    self._open_connection()
+    ~~~~~~~~~~~~~~~~~~~~~^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 360, in _open_connection
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.DatabaseError: 2003 (HY000): Can't connect to MySQL server on '127.0.0.2:3302' (60)
+2026-02-20 19:51:25,656 | ERROR | root | Exception occured: Not all parameters were used in the SQL statement
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 112, in update_single_user
+    cursor.execute(update_query, insert_values)   # replaces %s with actual values
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 335, in execute
+    raise ProgrammingError(
+        "Not all parameters were used in the SQL statement"
+    )
+mysql.connector.errors.ProgrammingError: Not all parameters were used in the SQL statement
+2026-02-20 19:54:43,889 | ERROR | root | Exception occured: Not enough parameters for the SQL statement
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 110, in update_single_user
+    cursor.execute(update_query, insert_values)   # replaces %s with actual values
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 333, in execute
+    stmt = RE_PY_PARAM.sub(psub, stmt)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 113, in __call__
+    raise ProgrammingError(
+        "Not enough parameters for the SQL statement"
+    ) from None
+mysql.connector.errors.ProgrammingError: Not enough parameters for the SQL statement
+2026-02-20 19:55:42,949 | ERROR | root | Exception occured: 1054 (42S22): Unknown column 'usser_name' in 'field list'
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'usser_name' in 'field list'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 112, in update_single_user
+    cursor.execute(update_query, insert_values)   # replaces %s with actual values
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'usser_name' in 'field list'
+2026-02-20 20:09:39,750 | ERROR | root | Exception occured: 1049 (42000): Unknown database 'messsenger'
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown database 'messsenger'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 138, in delete_users
+    cursor.execute(delete_query, users)   # replaces %s with actual values
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1049 (42000): Unknown database 'messsenger'
+2026-02-20 20:10:23,733 | ERROR | root | Exception occured: 1049 (42000): Unknown database 'messsenger'
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown database 'messsenger'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 138, in delete_users
+    cursor.execute(delete_query, users)   # replaces %s with actual values
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1049 (42000): Unknown database 'messsenger'
+2026-02-20 20:10:35,987 | ERROR | root | Exception occured: 1049 (42000): Unknown database 'messsenger'
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown database 'messsenger'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 138, in delete_users
+    cursor.execute(delete_query, users)   # replaces %s with actual values
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1049 (42000): Unknown database 'messsenger'
+2026-02-20 20:11:09,214 | ERROR | root | Exception occured: 1054 (42S22): Unknown column 'users_id' in 'where clause'
+Traceback (most recent call last):
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'users_id' in 'where clause'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/user_repo.py", line 138, in delete_users
+    cursor.execute(delete_query, users)   # replaces %s with actual values
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Users/TimJelenz/venvs/messenger_venv/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'users_id' in 'where clause'
+2026-02-22 11:02:52,427 | ERROR | root | Something in cursor execution went wrong, returning RepoError
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.users primary_key = 1000' at line 1
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/base_repo.py", line 125, in get_info
+    cursor.execute(select_query, (primary_key, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.users primary_key = 1000' at line 1
+2026-02-22 11:02:53,898 | ERROR | root | Exception occured: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.users primary_key = 1000' at line 1
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.users primary_key = 1000' at line 1
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/base_repo.py", line 125, in get_info
+    cursor.execute(select_query, (primary_key, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.users primary_key = 1000' at line 1
+2026-02-22 11:04:27,674 | ERROR | root | Something in cursor execution went wrong, returning RepoError
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'primary_key' in 'where clause'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/base_repo.py", line 125, in get_info
+    cursor.execute(select_query, (primary_key, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'primary_key' in 'where clause'
+2026-02-22 11:04:27,676 | ERROR | root | Exception occured: 1054 (42S22): Unknown column 'primary_key' in 'where clause'
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 772, in cmd_query
+    self._cmysql.query(
+    ~~~~~~~~~~~~~~~~~~^
+        query,
+        ^^^^^^
+    ...<3 lines>...
+        query_attrs=self.query_attrs,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+_mysql_connector.MySQLInterfaceError: Unknown column 'primary_key' in 'where clause'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/TimJelenz/Desktop/messenger/Backend/App/Repositories/base_repo.py", line 125, in get_info
+    cursor.execute(select_query, (primary_key, ))
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/cursor_cext.py", line 353, in execute
+    self._connection.cmd_query(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self._stmt_partition["mappable_stmt"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        raw_as_string=self._raw_as_string,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/opentelemetry/context_propagation.py", line 97, in wrapper
+    return method(cnx, *args, **kwargs)
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/site-packages/mysql/connector/connection_cext.py", line 781, in cmd_query
+    raise get_mysql_exception(
+        err.errno, msg=err.msg, sqlstate=err.sqlstate
+    ) from err
+mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column 'primary_key' in 'where clause'
+2026-02-22 11:11:51,013 | WARNING | root | Parsed an empty list!
+2026-02-22 11:15:26,125 | WARNING | root | Parsed an empty list!
+2026-02-22 11:16:03,628 | WARNING | root | Parsed an empty list!
