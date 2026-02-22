@@ -14,7 +14,7 @@ class PostRepo(BaseRepo):
         post_model = self.get_info(
             Post,
             "messenger.posts",
-            ("post_id", post_id),
+            {"post_id": post_id},
             *columns
         )
         return post_model # model | RepoError

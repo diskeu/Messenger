@@ -99,50 +99,55 @@ class BaseRepo():
             self.cnx.commit()
             cursor.close()
 
-    def get_info(self, model, table: str, primary_key_t: tuple[str, int], *columns: str) -> Model | RepoError:
+    def get_info(self, model, table: str, primary_keys: dict, *columns: str) -> Model | RepoError:
         """
-        Small help func, that builds an ORM for all major models, that need one primary key
+        Small help func, that builds an ORM for all major models
         
         :param model: Model that should get returned, needs to be a class itself, not an instance
         :model type: Model
         :param table: table where columns get selected from
         :table type: str
-        :primary_key_t: Primary Key tuple that exactly indexes the row in format tuple(primary_key_name, primary_key)
-        :primary_key_t type: int
+        :primary_keys: Primary Keys in example format -> {user_id: 12, community_id: 32}
+        :primary_keys type: dict
         :columns: columns that should get returned
         :columns type: str
         :return: the specified model or RepoError
         :rtype: model | RepoError
         """
-        # unpacking primary key val
-        pk_name, pk_id = primary_key_t[0], primary_key_t[1]
+        # unpacking primary keys into where statement
+        where_statement = ["{} = %s".format(k) for k, _ in primary_keys.items()]
 
-        if type(pk_name) != str or type(pk_id) != int:
-            self.logger.warning(
-                "Wrong type of primary_key, "
-                "prefered type: tuple[str, int], "
-                f"given type: [{type(pk_name), ",", type(pk_id)}"
-            )
-            return self.RepoError(
-                False,
-                9,
-                "Wrong type",
-                TypeError(
+        for pk_name, pk_id in primary_keys.items():
+            if type(pk_name) != str or type(pk_id) != int:
+                self.logger.warning(
                     "Wrong type of primary_key, "
                     "prefered type: tuple[str, int], "
                     f"given type: [{type(pk_name), ",", type(pk_id)}"
                 )
-            )
+                return self.RepoError(
+                    False,
+                    9,
+                    "Wrong type",
+                    TypeError(
+                        "Wrong type of primary_key, "
+                        "prefered type: tuple[str, int], "
+                        f"given type: [{type(pk_name), ",", type(pk_id)}"
+                    )
+                )
 
         # getting cursor
         cursor = self.create_cursor_obj(self.cnx)
 
-        select_query = self.build_select_query(f"{table}", "WHERE {pk_name} = %s".format(pk_name=pk_name), *columns)
+        select_query = self.build_select_query(
+            table,
+            f"WHERE {" AND ".join(where_statement)}",
+            *columns
+        )
 
         if isinstance(select_query, self.RepoError): return select_query
 
         try:
-            cursor.execute(select_query, (pk_id, ))
+            cursor.execute(select_query, tuple(primary_keys))
             info: dict = cursor.fetchall()
         except Exception as err:
             self.logger.exception(
@@ -181,7 +186,7 @@ class BaseRepo():
         
         :param columns: Columns to select
         :colum type: str
-        :param other_statement: statemnt after set for example where, join, limit..., default is ""
+        :param other_statement: statement for example where, join, limit..., default is ""
         :other_statement type: str
         :param table: selecting from that table
         :table type: str

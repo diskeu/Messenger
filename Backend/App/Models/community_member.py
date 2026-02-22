@@ -2,7 +2,7 @@
 from datetime import datetime
 from Backend.App.Models.base_model import BaseModel
 
-class CommunityMembers(BaseModel):
+class CommunityMember(BaseModel):
     def __init__(
         self,
         community_id: int,

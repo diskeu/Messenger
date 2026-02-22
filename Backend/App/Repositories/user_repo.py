@@ -14,7 +14,7 @@ class UserRepo(BaseRepo):
         user_model = self.get_info(
             User,
             "messenger.users",
-            ("user_id", user_id),
+            {"user_id": user_id},
             *columns
         )
         return user_model # model | RepoError
