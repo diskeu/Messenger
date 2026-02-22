@@ -169,17 +169,11 @@ class BaseRepo():
         # calling functions to get sql query
         columns, values = self.get_columns_values(*models)
         if not columns or not values: return None # Nothing to insert
-        insert_query: str = self.build_insert_query(table, columns, values)
-        
-        # flattens the values into one single tuple
-        flat_values = tuple(
-            x
-            for section in values
-            for x in section
-        )
+
+        insert_query, insert_val = self.build_insert_query(table, columns, values)
 
         # executing query
-        return self.execute_write(insert_query, *flat_values) # returns None | RepoError
+        return self.execute_write(insert_query, *insert_val) # returns None | RepoError
 
     def build_select_query(self, table: str, other_statement: str = "", *columns: str) -> str:
         """
@@ -206,7 +200,7 @@ class BaseRepo():
 
         return select_query
     
-    def build_insert_query(self, table: str, columns: list | GeneratorType, values: list[tuple]) -> str:
+    def build_insert_query(self, table: str, columns: list | GeneratorType, values: list[tuple]) -> tuple[str, list[any]]:
         """
         Builds a SQL-Insert-Query with the given columns and values
         
@@ -217,8 +211,8 @@ class BaseRepo():
         :param values: values to insert, can be more than one, must be a list of tuples
         values will be replaced with %s to prevent injections and can be later replaced
         :type values: list[tuple]
-        :return: SQL Query
-        :rtype: str
+        :return: tuple[SQL QUERY, list[Insert Values]] -> 
+        :rtype: tuple[str, list[any]]
         """
         # first statement
         insert_query = f"INSERT INTO {table} "
@@ -226,20 +220,29 @@ class BaseRepo():
         # add additional columns
         if columns: insert_query += f"({', '.join(columns)}) VALUES "
 
-        # defining section length's
-        value_section_count: int = len(values)  # get length of the values sections -> (val1, val2, val3...) = 1 section
-        values_count: int = len(values[0])      # len of every item in one section
+        # defining empty lists
+        secure_values: list[str] = [] # outputs list[str]
+        insert_val = []
 
-        # making output secure
-        # outputs something like (%s, %s, %s, %s, %s, %s, %s) * (count of all sections)
-        secure_item_section = ', '.join(['%s'] * values_count)                          # section like (%s, %s, %s, %s, %s, %s, %s)
-        secure_values = ", ".join(value_section_count * [f"({secure_item_section})"])   # whole secure section
+        for i, section in enumerate(values):
+            secure_values.append([])        # list where val get inserted
+
+            for value in section:           # outputs secure_vals[i] to -> ['%s', '%s', '%s', '%s', '%s', '%s', '%s', 'DEFAULT']
+                if value == "DEFAULT":
+                    secure_values[i].append("DEFAULT")
+
+                else:
+                    secure_values[i].append("%s")
+                    insert_val.append(value)
+
+            # formatting section to '(%s, %s, %s, %s, %s, %s, %s, DEFAULT)'
+            secure_values[i] = f'({", ".join(secure_values[i])})'
 
         # adding secure_values and end of query statement
-        insert_query += secure_values
-        insert_query += ";"
+        insert_query += ", ".join(secure_values) +";"
 
-        return insert_query
+        # returning sql query + new val's to insert
+        return insert_query, insert_val
     
     def build_update_query(self, table: str, update_val: dict, other_statement: str) -> tuple[str, list]:
         """

@@ -6,7 +6,7 @@ class Post(BaseModel):
     def __init__(
         self,
         post_id: int,
-        post_creator: str,
+        post_creator: int,
         community_id: int | None,
         post_title: str | None,
         post_content: str,
