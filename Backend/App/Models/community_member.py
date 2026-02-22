@@ -8,7 +8,7 @@ class CommunityMembers(BaseModel):
         community_id: int,
         user_id: int,
         role: str,
-        member_since: datetime
+        member_since: datetime | None # current timestamp
     ):
         self.community_id = community_id
         self.user_id = user_id

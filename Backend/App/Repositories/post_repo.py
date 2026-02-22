@@ -9,7 +9,7 @@ class PostRepo(BaseRepo):
         self.logger = logger
         self.cnx = cnx
 
-    def get_user_info(self, post_id: int, *columns: str) -> Post | BaseRepo.RepoError:
+    def get_post_info(self, post_id: int, *columns: str) -> Post | BaseRepo.RepoError:
         """User - ORM: Given a 'post_id', returns instance of the post class or RepoError"""
         post_model = self.get_info(
             Post,
@@ -38,7 +38,7 @@ class PostRepo(BaseRepo):
         # executing statement
         return self.execute_write(update_query, *insert_values) # None | RepoError
 
-    def delete_users(self, *posts: int) -> None| BaseRepo.RepoError:
+    def delete_posts(self, *posts: int) -> None| BaseRepo.RepoError:
         """Given a list of post_ids, deletes the corresponding posts"""
         # making condition
         post_statement = ["%s" for _ in range(len(posts))]
@@ -51,3 +51,5 @@ class PostRepo(BaseRepo):
         )
         # executing statement
         return self.execute_write(delete_query, *posts)
+    
+

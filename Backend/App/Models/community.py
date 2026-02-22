@@ -6,7 +6,7 @@ class Community(BaseModel):
     def __init__(
         self,
         community_id: int,
-        created_at: datetime,
+        created_at: datetime | None, # current timestamp
         community_owner: int,
         community_description: str | None = None
     ):
