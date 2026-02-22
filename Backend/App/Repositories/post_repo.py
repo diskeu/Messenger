@@ -56,6 +56,6 @@ from Backend.App.logger_config import setup_logger
 from Backend.App.Database.connection import connect
 from datetime import datetime
 p_r = PostRepo(setup_logger(), connect("/Users/TimJelenz/Desktop/messenger/Backend/Configurations/mysql.conf", "root"))
-post = Post(12, "x", None, "inital post", "First inital post", 12, False, None)
+post = Post(12, 10020, None, "inital post", "First inital post", 12, False, -1)
 p_r.get_post_info(12, "post_creator")
 p_r.insert_post(post)
