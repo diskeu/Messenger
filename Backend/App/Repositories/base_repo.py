@@ -45,20 +45,6 @@ class BaseRepo():
             self.message = message
             self.exception = exception
 
-    def create_cursor_obj(self, cnx: MySQLConnection) -> MySQLCursor | RepoError:
-        """Given a Connection returns a cursor object or RepoError"""
-        # reconnecting to DB and defining cursor
-        if not cnx.is_connected(): cnx.reconnect()
-        try:
-            return cnx.cursor(dictionary=True)
-        except OperationalError as err:
-            return self.RepoError(
-                False,
-                4,
-                "Network / Timeout error",
-                err
-        )
-
     def handle_db_error(self, err: Exception) -> RepoError:
         """Handles common DB errors and returns RepoError"""
 
@@ -84,7 +70,36 @@ class BaseRepo():
         # Other Errors
         else: return self.RepoError(False, 10, "Error -> check Exception for more info", err)
 
-    def get_info(self, model, table: str, primary_key: tuple[str, int], *columns: str) -> Model | RepoError:
+    def create_cursor_obj(self, cnx: MySQLConnection) -> MySQLCursor | RepoError:
+        """Given a Connection returns a cursor object or RepoError"""
+        # reconnecting to DB and defining cursor
+        if not cnx.is_connected(): cnx.reconnect()
+        try:
+            return cnx.cursor(dictionary=True)
+        except OperationalError as err:
+            return self.RepoError(
+                False,
+                4,
+                "Network / Timeout error",
+                err
+        )
+    def execute_write(self, query: str, *values) -> None | RepoError:
+        """Given a sql insert/update/delete - query and values, executes the query\n
+        returns None | RepoError"""
+
+        # getting cursor obj
+        cursor = self.create_cursor_obj(self.cnx)
+        try:
+            cursor.execute(query, values)   # replaces %s with actual values
+            
+        except MysqlBaseError as err:
+            return self.handle_db_error(err)
+        
+        finally:
+            self.cnx.commit()
+            cursor.close()
+
+    def get_info(self, model, table: str, primary_key_t: tuple[str, int], *columns: str) -> Model | RepoError:
         """
         Small help func, that builds an ORM for all major models, that need one primary key
         
@@ -92,18 +107,21 @@ class BaseRepo():
         :model type: Model
         :param table: table where columns get selected from
         :table type: str
-        :primary_key: Primary Key that exactly indexes the row in format tuple(primary_key_name, primary_key)
-        :primary_key type: int
+        :primary_key_t: Primary Key tuple that exactly indexes the row in format tuple(primary_key_name, primary_key)
+        :primary_key_t type: int
         :columns: columns that should get returned
         :columns type: str
         :return: the specified model or RepoError
         :rtype: model | RepoError
         """
-        if type(primary_key[0]) != str or type(primary_key[1]) != int:
+        # unpacking primary key val
+        pk_name, pk_id = primary_key_t[0], primary_key_t[1]
+
+        if type(pk_name) != str or type(pk_id) != int:
             self.logger.warning(
                 "Wrong type of primary_key, "
                 "prefered type: tuple[str, int], "
-                f"given type: [{type(primary_key[0]), ",", type(primary_key[1])}"
+                f"given type: [{type(pk_name), ",", type(pk_id)}"
             )
             return self.RepoError(
                 False,
@@ -112,19 +130,19 @@ class BaseRepo():
                 TypeError(
                     "Wrong type of primary_key, "
                     "prefered type: tuple[str, int], "
-                    f"given type: [{type(primary_key[0]), ",", type(primary_key[1])}"
+                    f"given type: [{type(pk_name), ",", type(pk_id)}"
                 )
             )
 
         # getting cursor
         cursor = self.create_cursor_obj(self.cnx)
 
-        select_query = self.build_select_query(f"{table}", "WHERE %s = %s", *columns)
+        select_query = self.build_select_query(f"{table}", "WHERE {pk_name} = %s".format(pk_name=pk_name), *columns)
 
         if isinstance(select_query, self.RepoError): return select_query
 
         try:
-            cursor.execute(select_query, primary_key)
+            cursor.execute(select_query, (pk_id, ))
             info: dict = cursor.fetchall()
         except Exception as err:
             self.logger.exception(
@@ -133,11 +151,35 @@ class BaseRepo():
             return self.handle_db_error(err)
 
         # defining model with the given sql return
-        if not info: return model
         info_model: Model = self.create_model(info, model)
         return info_model # returning model or RepoError
+    
+    def post_model(self, table: str, *models: Model) -> None | BaseRepo.RepoError:
+        """
+        Given instances of the same model class, creates a db entry with the specified propertys from the user model\n
+        Note: The models must have one primary key\n
 
+        :param table: Table in which the model gets posted
+        :type table: str
+        :param model: Instances of the same model class
+        :type model: Model
+        :return: None or RepoError
+        :rtype: None | RepoError
+        """
+        # calling functions to get sql query
+        columns, values = self.get_columns_values(*models)
+        if not columns or not values: return None # Nothing to insert
+        insert_query: str = self.build_insert_query(table, columns, values)
+        
+        # flattens the values into one single tuple
+        flat_values = tuple(
+            x
+            for section in values
+            for x in section
+        )
 
+        # executing query
+        return self.execute_write(insert_query, *flat_values) # returns None | RepoError
 
     def build_select_query(self, table: str, other_statement: str = "", *columns: str) -> str:
         """
@@ -280,7 +322,6 @@ class BaseRepo():
 
         else:
             self.logger.info("Parsed an empty list!")
-            return model
 
         # check if model is instance or class
         if not isinstance(model, type):
@@ -298,6 +339,9 @@ class BaseRepo():
         default_parm: list = [-1 for _ in range(len_call_signature)]               # -1 as a default value for not specified parm
 
         temp_model = model(*default_parm)                                          # initalising the model with the default parmeters
+
+        # if return is [] -> return model with default parm
+        if not sql_return: return temp_model
 
         # getting the attributes of temp_model
         for k, v in sql_values.items():

@@ -1,9 +1,7 @@
 # Repo to access / post data, related to the posts-table
-from Backend.App.Models.user import post
+from __future__ import annotations
+from Backend.App.Models.post import Post
 from Backend.App.Repositories.base_repo import BaseRepo
-from mysql.connector.errors import (
-    Error as MysqlBaseError
-)
 
 class PostRepo(BaseRepo):
     def __init__(self, logger, cnx):
@@ -11,38 +9,45 @@ class PostRepo(BaseRepo):
         self.logger = logger
         self.cnx = cnx
 
-    def get_post_info(self, post_id: int, *columns: str) -> post | BaseRepo.RepoError:
-        """Post - ORM: Given a 'post_id', returns instance of the post class or RepoError """ 
-        if type(post_id) != int:
-            self.logger.warning(
-                "Wrong type of post_id, "
-                "prefered type: int, "
-                f"given type: {type(post_id)}"
-            )
-            return self.RepoError(
-                False,
-                9,
-                "Wrong type",
-                TypeError(
-                "Wrong type of post_id, "
-                "prefered type: int, "
-                f"given type: {type(post_id)}"
-            )
-            ) 
-        # getting cursor
-        cursor = self.create_cursor_obj(self.cnx)
-        
-        select_query = self.build_select_query("messenger.posts", "post_id = %s", *columns)
-        if isinstance(select_query, self.RepoError): return select_query
+    def get_user_info(self, post_id: int, *columns: str) -> Post | BaseRepo.RepoError:
+        """User - ORM: Given a 'post_id', returns instance of the post class or RepoError"""
+        post_model = self.get_info(
+            Post,
+            "messenger.posts",
+            ("post_id", post_id),
+            *columns
+        )
+        return post_model # model | RepoError
 
-        try:
-            cursor.execute(select_query, (post_id, ))
-            post_info: dict = cursor.fetchall()
-        except Exception as err:
-            return self.handle_db_error(err)
+    def insert_post(self, *models: Post) -> None | BaseRepo.RepoError:
+        """Given post models, inserts them into the DB, returns None | RepoError"""
+        return self.post_model(     # None | RepoError
+            "messenger.posts",
+            *models
+        )
 
-        # defining model with the given sql return
-        user_model: user = self.create_model(user_info, user)
-        return user_model # returning user_model or RepoError
+    def update_single_post(self, post_id, values: dict) -> None | BaseRepo.RepoError:
+        """Given a 'post_id', values and a 'mysql.connector.connection_cext.CMySQLConnection', updates the post's values"""
+        update_query, insert_values = self.build_update_query(
+            table="messenger.posts",
+            update_val=values,
+            other_statement="WHERE post_id = %s"
+        )
+        insert_values.append(post_id)
 
+        # executing statement
+        return self.execute_write(update_query, *insert_values) # None | RepoError
 
+    def delete_users(self, *posts: int) -> None| BaseRepo.RepoError:
+        """Given a list of post_ids, deletes the corresponding posts"""
+        # making condition
+        post_statement = ["%s" for _ in range(len(posts))]
+        condition = f"WHERE post_id IN ({", ".join(post_statement)})"
+
+        # getting delete query
+        delete_query = self.build_delete_query(
+            table="messenger.posts",
+            condition=condition
+        )
+        # executing statement
+        return self.execute_write(delete_query, *posts)
