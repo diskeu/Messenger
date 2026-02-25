@@ -52,14 +52,14 @@ class CommentRepo(BaseRepo):
             *models
         )
 
-    def update_single_community(self, community_id, values: dict) -> None | BaseRepo.RepoError:
-        """Given a 'community_id', values and a 'mysql.connector.connection_cext.CMySQLConnection', updates the community's values"""
+    def update_single_comment(self, comment_id: int, values: dict) -> None | BaseRepo.RepoError:
+        """Given a 'comment_id', values and a 'mysql.connector.connection_cext.CMySQLConnection', updates the comment's values"""
         update_query, insert_values = self.build_update_query(
-            table="messenger.communitys",
+            table="messenger.comments",
             update_val=values,
-            other_statement="WHERE community_id = %s"
+            other_statement="WHERE comment_id = %s"
         )
-        insert_values.append(community_id)
+        insert_values.append(comment_id)
 
         # executing statement
         return self.execute_write(update_query, *insert_values) # None | RepoError 
@@ -72,7 +72,7 @@ class CommentRepo(BaseRepo):
 
         # getting delete query
         delete_query = self.build_delete_query(
-            table="messenger.community",
+            table="messenger.comments",
             condition=condition
         )
         # executing statement
@@ -89,6 +89,7 @@ cnx = connect("/Users/TimJelenz/Desktop/messenger/Backend/Configurations/mysql.c
 c_r = CommentRepo(logger, cnx)
 # clss = Comment(-1, 1002, 44, None, "Initial comment", -1)
 # c_r.insert_comment(clss)
-print(c_r.get_comment_info(2))
 c = c_r.get_sub_comments([44])
+c_r.update_single_comment(2, {"comment_content": "New content"})
+print(c_r.get_comment_info(2))
 print(c)
