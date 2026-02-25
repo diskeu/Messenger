@@ -147,7 +147,7 @@ class BaseRepo():
                     )
                 )
             
-    def get_all(self, table: str, condition: str | None = None, values: list | None = None, *columns: str) -> list[dict[any]] | RepoError:
+    def get_all(self, table: str, condition: str | None = "", values: list | None = None, *columns: str) -> list[dict[any]] | RepoError:
         """
         Small func, that makes an select statement, based on the table, condition and columns.\n
         If no columns get parsed -> columns will be set to *.\n
@@ -192,7 +192,7 @@ class BaseRepo():
             *columns
         )
         # executing query
-        info = self.execute_read(select_query, tuple(primary_keys))
+        info = self.execute_read(select_query, *tuple(primary_keys.values()))
         if isinstance(info, self.RepoError): return info
 
         # defining model with the given sql return

@@ -285,3 +285,19 @@ man kann auch eine eigene format klasse machen indem man von logger.formatter er
 exception hat im unterschied zu error nicht nur eine message sondern beinhaltet auch den stacktrace
 DEBUG < INFO < WARNING < ERROR < CRITICAL
 %( -> start eines logs -> name eines logs -> )s als string einsetzen
+__________________________________________________________________________________________________________________________________________________________________
+Debug check
+from Backend.App.logger_config import setup_logger
+from Backend.App.Database.connection import connect
+from Backend.App.Models.community_member import CommunityMember
+from Backend.App.Models.community import Community
+from Backend.App.Repositories.community_repo import CommunityRepo
+
+c_r = CommunityMemberRepo(setup_logger(), connect("/Users/TimJelenz/Desktop/messenger/Backend/Configurations/mysql.conf", "root"))
+c = Community(-1, -1, 1002, None)
+c_c = CommunityRepo(setup_logger(), connect("/Users/TimJelenz/Desktop/messenger/Backend/Configurations/mysql.conf", "root"))
+c_m = CommunityMember(1, 1002, "member", -1)
+# c_r.insert_community_member(c_m)
+# c_r.update_community_member_role(1, 1002, "moderator")
+print(c_r.get_all("messenger.community_members"))
+print(c_r.get_member_info(1, 1002).role)

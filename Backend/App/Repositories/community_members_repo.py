@@ -42,7 +42,7 @@ class CommunityMemberRepo(BaseRepo):
         # executing statement
         return self.execute_write(update_query, *insert_values) # None | RepoError
 
-    def delete_posts(self, community_id: int, *member_ids: int) -> None| BaseRepo.RepoError:
+    def delete_member(self, community_id: int, *member_ids: int) -> None| BaseRepo.RepoError:
         """Given a list of member_ids, deletes the corresponding members from the community"""
         # making condition
         member_placeholders = ("%s" for _ in range(len(member_ids)))
@@ -57,11 +57,4 @@ class CommunityMemberRepo(BaseRepo):
         )
 
         # executing statement
-        return self.execute_write(delete_query, *member_ids, community_id)
-
-
-from Backend.App.logger_config import setup_logger
-from Backend.App.Database.connection import connect
-
-c_r = CommunityMemberRepo(setup_logger(), connect("/Users/TimJelenz/Desktop/messenger/Backend/Configurations/mysql.conf", "root"))
-c_r.get_member_info(12, 32)
+        return self.execute_write(delete_query, community_id, *member_ids)
