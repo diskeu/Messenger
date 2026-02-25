@@ -30,20 +30,8 @@ class CommentRepo(BaseRepo):
             selected_columns = ", ".join(columns) if columns else "*",
             post_ids = ", ".join("%s" for _ in range(len(post_ids)))
         )
-
-        # getting cursor
-        cursor = self.create_cursor_obj(self.cnx)
-        try:
-            cursor.execute(select_query, post_ids)
-            comments: dict = cursor.fetchall()
-        except Exception as err:
-            self.logger.exception(
-                f"Something in cursor execution went wrong, returning RepoError"
-            )
-            return self.handle_db_error(err)
-        finally:
-            cursor.close()
-        return comments
+        # returns comments | RepoError
+        return self.execute_read(select_query, *post_ids)
 
     def insert_comment(self, *models: Comment) -> None | BaseRepo.RepoError:
         """Given Comment models, inserts them into the DB, returns None | RepoError"""
@@ -77,3 +65,9 @@ class CommentRepo(BaseRepo):
         )
         # executing statement
         return self.execute_write(delete_query, *comment_ids)
+    
+from Backend.App.logger_config import setup_logger
+from Backend.App.Database.connection import connect
+
+c_r = CommentRepo(setup_logger(), connect("/Users/TimJelenz/Desktop/messenger/Backend/Configurations/mysql.conf", "root"))
+print(c_r.get_all("messenger.comments"))

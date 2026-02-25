@@ -90,8 +90,10 @@ class BaseRepo():
                 err
         )
     def execute_write(self, query: str, *values) -> None | RepoError:
-        """Given a sql insert/update/delete - query and values, executes the query\n
-        returns None | RepoError"""
+        """
+        Given a sql insert/update/delete - query and values, executes the query\n
+        returns None | RepoError
+        """
 
         # getting cursor obj
         cursor = self.create_cursor_obj(self.cnx)
@@ -99,11 +101,31 @@ class BaseRepo():
             cursor.execute(query, values)   # replaces %s with actual values
             
         except MysqlBaseError as err:
+            self.logger.exception("Something in cursor execution went wrong, returning RepoError")
             return self.handle_db_error(err)
         
         finally:
             self.cnx.commit()
             cursor.close()
+
+    def execute_read(self, query, *values) -> list[dict[any]] | RepoError:
+        """
+        Given a sql select - query and values, executes the query\n
+        returns the cursor return in dict format | RepoError
+        """
+        # getting cursor
+        cursor = self.create_cursor_obj(self.cnx)
+        try:
+            cursor.execute(query, values)
+            rows: dict = cursor.fetchall()
+        except MysqlBaseError as err:
+            self.logger.exception(
+                "Something in cursor execution went wrong, returning RepoError"
+            )
+            return self.handle_db_error(err)
+        finally:
+            cursor.close()
+        return rows
 
     def check_pk_val(self, primary_keys: dict) -> None | RepoError:
         """Small help func that checks wether the primary keys dict correspond to the right vals and logs the errors, returns None|RepoError"""
@@ -124,6 +146,24 @@ class BaseRepo():
                         f"given type: [{type(pk_name), ",", type(pk_id)}"
                     )
                 )
+            
+    def get_all(self, table: str, condition: str | None = None, values: list | None = None, *columns: str) -> list[dict[any]] | RepoError:
+        """
+        Small func, that makes an select statement, based on the table, condition and columns.\n
+        If no columns get parsed -> columns will be set to *.\n
+        Condition should be formatted with %s, %s will be replaced with values list.\n
+        Returns the sql connector return, in dict format or RepoError.
+        """
+        select_query = self.build_select_query(
+            table,
+            condition,
+            *columns
+        )
+        # returns list[dict[any]] | RepoError
+        return self.execute_read(
+            select_query,
+            *(values if values else [])
+        )
 
     def get_info(self, model, table: str, primary_keys: dict, *columns: str) -> Model | RepoError:
         """
@@ -146,25 +186,14 @@ class BaseRepo():
         checked_val = self.check_pk_val(primary_keys)
         if checked_val != None: return checked_val # returns RepoError
 
-        # getting cursor
-        cursor = self.create_cursor_obj(self.cnx)
-
         select_query = self.build_select_query(
             table,
             f"WHERE {" AND ".join(where_statement)}",
             *columns
         )
-
-        if isinstance(select_query, self.RepoError): return select_query
-
-        try:
-            cursor.execute(select_query, tuple(primary_keys))
-            info: dict = cursor.fetchall()
-        except Exception as err:
-            self.logger.exception(
-                f"Something in cursor execution went wrong, returning RepoError"
-            )
-            return self.handle_db_error(err)
+        # executing query
+        info = self.execute_read(select_query, tuple(primary_keys))
+        if isinstance(info, self.RepoError): return info
 
         # defining model with the given sql return
         info_model: Model = self.create_model(info, model)

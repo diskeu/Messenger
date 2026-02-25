@@ -64,3 +64,4 @@ from Backend.App.logger_config import setup_logger
 from Backend.App.Database.connection import connect
 
 c_r = CommunityMemberRepo(setup_logger(), connect("/Users/TimJelenz/Desktop/messenger/Backend/Configurations/mysql.conf", "root"))
+c_r.get_member_info(12, 32)
