@@ -64,11 +64,11 @@ class CommentRepo(BaseRepo):
         # executing statement
         return self.execute_write(update_query, *insert_values) # None | RepoError 
     
-    def delete_communitys(self, *community_id: int) -> None| BaseRepo.RepoError:
-        """Given a list of community_id, deletes the corresponding community"""
+    def delete_comments(self, *comment_ids: int) -> None| BaseRepo.RepoError:
+        """Given a list of comment_ids, deletes the corresponding comments"""
         # making condition
-        statement = ["%s" for _ in range(len(community_id))]
-        condition = f"WHERE community_id IN ({", ".join(statement)})"
+        statement = ["%s" for _ in range(len(comment_ids))]
+        condition = f"WHERE comment_id IN ({", ".join(statement)})"
 
         # getting delete query
         delete_query = self.build_delete_query(
@@ -76,20 +76,4 @@ class CommentRepo(BaseRepo):
             condition=condition
         )
         # executing statement
-        return self.execute_write(delete_query, *community_id)
-        self.get
-
-from Backend.App.logger_config import setup_logger
-from Backend.App.Database.connection import connect
-from Backend.App.Repositories.post_repo import PostRepo
-from Backend.App.Models.post import Post
-
-logger = setup_logger()
-cnx = connect("/Users/TimJelenz/Desktop/messenger/Backend/Configurations/mysql.conf", "root")
-c_r = CommentRepo(logger, cnx)
-# clss = Comment(-1, 1002, 44, None, "Initial comment", -1)
-# c_r.insert_comment(clss)
-c = c_r.get_sub_comments([44])
-c_r.update_single_comment(2, {"comment_content": "New content"})
-print(c_r.get_comment_info(2))
-print(c)
+        return self.execute_write(delete_query, *comment_ids)
