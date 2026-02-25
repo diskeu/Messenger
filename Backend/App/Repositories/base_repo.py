@@ -8,13 +8,14 @@ from mysql.connector.errors import (
     IntegrityError,
     ProgrammingError,
     DatabaseError,
+    InternalError,
     Error as MysqlBaseError
 )
 from Backend.App.Exceptions.DB_Exceptions import (
     QuerySyntaxError,
     ExistingAttributeError,
     ModelError,
-    SqlReturnTypeError
+    SqlReturnTypeError,
 )
 from Backend.App.Models.base_model import BaseModel as Model
 from mysql.connector.connection import MySQLConnection
@@ -34,6 +35,7 @@ class BaseRepo():
             3: ModelError,
             4: OperationalError,
             5: SqlReturnTypeError,
+            6: InternalError,
             7: QuerySyntaxError,
             8: ExistingAttributeError,
             9: TypeError,
@@ -50,6 +52,10 @@ class BaseRepo():
 
         # logg exeption
         self.logger.exception("Exception occured: %s", err)
+
+        # MySQL server encounters an internal error, for example, when a deadlock occurred
+        if isinstance(err, InternalError):
+            return self.RepoError(False, 6, "Internal error - deadlock occured", err)
 
         # Value already exists
         if isinstance(err, IntegrityError):
@@ -99,6 +105,26 @@ class BaseRepo():
             self.cnx.commit()
             cursor.close()
 
+    def check_pk_val(self, primary_keys: dict) -> None | RepoError:
+        """Small help func that checks wether the primary keys dict correspond to the right vals and logs the errors, returns None|RepoError"""
+        for pk_name, pk_id in primary_keys.items():
+            if type(pk_name) != str or type(pk_id) != int:
+                self.logger.warning(
+                    "Wrong type of primary_key, "
+                    "prefered type: tuple[str, int], "
+                    f"given type: [{type(pk_name), ",", type(pk_id)}"
+                )
+                return self.RepoError(
+                    False,
+                    9,
+                    "Wrong type",
+                    TypeError(
+                        "Wrong type of primary_key, "
+                        "prefered type: tuple[str, int], "
+                        f"given type: [{type(pk_name), ",", type(pk_id)}"
+                    )
+                )
+
     def get_info(self, model, table: str, primary_keys: dict, *columns: str) -> Model | RepoError:
         """
         Small help func, that builds an ORM for all major models
@@ -117,23 +143,8 @@ class BaseRepo():
         # unpacking primary keys into where statement
         where_statement = ["{} = %s".format(k) for k, _ in primary_keys.items()]
 
-        for pk_name, pk_id in primary_keys.items():
-            if type(pk_name) != str or type(pk_id) != int:
-                self.logger.warning(
-                    "Wrong type of primary_key, "
-                    "prefered type: tuple[str, int], "
-                    f"given type: [{type(pk_name), ",", type(pk_id)}"
-                )
-                return self.RepoError(
-                    False,
-                    9,
-                    "Wrong type",
-                    TypeError(
-                        "Wrong type of primary_key, "
-                        "prefered type: tuple[str, int], "
-                        f"given type: [{type(pk_name), ",", type(pk_id)}"
-                    )
-                )
+        checked_val = self.check_pk_val(primary_keys)
+        if checked_val != None: return checked_val # returns RepoError
 
         # getting cursor
         cursor = self.create_cursor_obj(self.cnx)
@@ -177,6 +188,7 @@ class BaseRepo():
 
         insert_query, insert_val = self.build_insert_query(table, columns, values)
 
+        print(insert_query, insert_val)
         # executing query
         return self.execute_write(insert_query, *insert_val) # returns None | RepoError
 

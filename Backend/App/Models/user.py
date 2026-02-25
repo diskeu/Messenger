@@ -8,7 +8,7 @@ class User(BaseModel):
         user_name: str,
         hashed_password: str,
         email: str,
-        created_at: datetime | None, # current timestamp
+        created_at: datetime,
         birth_date: date,
         last_seen: datetime | None = None
     ):

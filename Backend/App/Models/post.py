@@ -12,7 +12,7 @@ class Post(BaseModel):
         post_content: str,
         post_score: int,
         is_sticky: bool,
-        created_at: datetime | None # current timestamp
+        created_at: datetime
     ):
         self.post_id = post_id
         self.post_creator = post_creator
