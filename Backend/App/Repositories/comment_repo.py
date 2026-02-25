@@ -19,7 +19,7 @@ class CommentRepo(BaseRepo):
         )
         return comment_model # model | RepoError
     
-    def get_sub_comments(self, post_ids: list, *columns: str) -> dict[tuple] | BaseRepo.RepoError:
+    def get_sub_comments(self, post_ids: list, *columns: str) -> list[dict[any]] | BaseRepo.RepoError:
         """Gets all of the comments of specific post_ids"""
 
         # checking values
@@ -87,8 +87,8 @@ from Backend.App.Models.post import Post
 logger = setup_logger()
 cnx = connect("/Users/TimJelenz/Desktop/messenger/Backend/Configurations/mysql.conf", "root")
 c_r = CommentRepo(logger, cnx)
-clss = Comment(-1, 44)
-p_r = PostRepo(logger, cnx)
-c_r.insert_comment(clss)
+# clss = Comment(-1, 1002, 44, None, "Initial comment", -1)
+# c_r.insert_comment(clss)
+print(c_r.get_comment_info(2))
 c = c_r.get_sub_comments([44])
 print(c)

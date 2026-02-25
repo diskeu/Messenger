@@ -188,7 +188,6 @@ class BaseRepo():
 
         insert_query, insert_val = self.build_insert_query(table, columns, values)
 
-        print(insert_query, insert_val)
         # executing query
         return self.execute_write(insert_query, *insert_val) # returns None | RepoError
 
