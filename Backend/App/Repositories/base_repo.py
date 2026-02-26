@@ -77,12 +77,13 @@ class BaseRepo():
         # Other Errors
         else: return self.RepoError(False, 10, "Error -> check Exception for more info", err)
 
-    def create_cursor_obj(self, cnx: MySQLConnection) -> MySQLCursor | RepoError:
+    def create_cursor_obj(self, cnx: MySQLConnection, dict_format: bool = True) -> MySQLCursor | RepoError:
         """Given a Connection returns a cursor object or RepoError"""
         # reconnecting to DB and defining cursor
         if not cnx.is_connected(): cnx.reconnect()
         try:
-            return cnx.cursor(dictionary=True)
+            # returning in appropriate format
+            return cnx.cursor(dictionary=True) if dict_format else cnx.cursor()
         except OperationalError as err:
             return self.RepoError(
                 False,

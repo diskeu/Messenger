@@ -8,7 +8,7 @@ class PostRepo(BaseRepo):
         super().__init__(logger)
         self.logger = logger
         self.cnx = cnx
-
+        
     def get_post_info(self, post_id: int, *columns: str) -> Post | BaseRepo.RepoError:
         """User - ORM: Given a 'post_id', returns instance of the post class or RepoError"""
         post_model = self.get_info(
