@@ -59,12 +59,36 @@ class VoteRepo(BaseRepo):
         post_id_to_vote = {post_vote.get("post_id"): post_vote.get("vote") for post_vote in sql_return_val}
         return post_id_to_vote
 
-    def insert_post(self, *models: Post) -> None | BaseRepo.RepoError:
-        """Given post models, inserts them into the DB, returns None | RepoError"""
-        return self.post_model(     # None | RepoError
-            "messenger.posts",
-            *models
+    def vote(self, user_id, post_id, mode: int) -> None | BaseRepo.RepoError:
+        """
+        Given an user_id, post_id and mode will do a vote related task depending on the vote\n
+        Modes:
+            1: 'upvote'
+            2: 'downvote'
+            3: 'unvote'
+        """
+        if mode == 3:
+            delete_query = self.build_delete_query(
+                "messenger.votes",
+                "WHERE user_id = %s AND post_id = %s"
+            )
+            return self.execute_write(delete_query, user_id, post_id) # None | RepoError
+        
+
+            return self.post_model(     # None | RepoError
+                "messenger.posts",
+                vote_instance
+            )
+        vote_instance = Vote(
+            user_id,
+            post_id,
+            1 if mode == 1 else -1
         )
+        # Checking on Repo Error
+        columns_values: tuple = self.get_columns_values(vote_instance)
+        if isinstance(columns_values, self.RepoError): return columns_values
+
+        self.execute_write()
 
     def update_single_post(self, post_id, values: dict) -> None | BaseRepo.RepoError:
         """Given a 'post_id', values and a 'mysql.connector.connection_cext.CMySQLConnection', updates the post's values"""
