@@ -211,8 +211,12 @@ class BaseRepo():
         :return: None or RepoError
         :rtype: None | RepoError
         """
+        # Checking on Repo Error
+        columns_values: tuple = self.get_columns_values(*models)
+        if isinstance(columns_values, self.RepoError): return columns_values
+
         # calling functions to get sql query
-        columns, values = self.get_columns_values(*models)
+        columns, values = columns_values
         if not columns or not values: return None # Nothing to insert
 
         insert_query, insert_val = self.build_insert_query(table, columns, values)
