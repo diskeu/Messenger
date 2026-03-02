@@ -3,6 +3,9 @@ flyway.conf
 mysql.conf
 Configurations/
 
+# Logs
+Logs/
+
 # Python generated Files
 __pycache__/
 .Python
