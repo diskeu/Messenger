@@ -170,7 +170,7 @@ class BaseRepo():
     def get_all_enriched(
         self,
         table: str,
-        primary_keys: tuple[tuple[str, ...], list[tuple[any, ...]]] | None, # TODO fix Bug related to -> if len(primary_keys[0]) > 0:
+        primary_keys: tuple[tuple[str, ...], list[tuple[any, ...]]] = None,
         joins: list[tuple[str, str]] = None,
         where_statement: str = None,
         condition: str = None,
@@ -226,7 +226,7 @@ class BaseRepo():
             return ", ".join("({})".format(", ".join(add_to_values(v) for v in t)) for t in tuple_list)
             
         # PRIMARY KEYS
-        if len(primary_keys[0]) > 0:
+        if primary_keys and len(primary_keys[0]) > 0:
             pk_condition = "({}) IN ({})".format(
             # Column Names
             ", ".join(primary_keys[0]),
