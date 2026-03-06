@@ -149,39 +149,23 @@ class BaseRepo():
                         f"given type: [{type(pk_name), ",", type(pk_id)}"
                     )
                 )
-            
-    def get_all(self, table: str, condition: str | None = "", values: list | None = None, *columns: str) -> list[dict[any]] | RepoError:
-        """
-        Small func, that makes an select statement, based on the table, condition and columns.\n
-        If no columns get parsed -> columns will be set to *.\n
-        Condition should be formatted with %s, %s will be replaced with values list.\n
-        Returns the sql connector return, in dict format or RepoError.
-        """
-        select_query = self.build_select_query(
-            table,
-            condition,
-            *columns
-        )
-        # returns list[dict[any]] | RepoError
-        return self.execute_read(
-            select_query,
-            *(values if values else [])
-        )
     def get_all_enriched(
         self,
         table: str,
-        primary_keys: tuple[tuple[str, ...], list[tuple[any, ...]]] = None,
+        primary_keys: tuple[tuple[str, ...] | list[tuple[str, ...]] | any, list[tuple[any, ...]]] | None = None,
         joins: list[tuple[str, str]] = None,
         where_statement: str = None,
         condition: str = None,
         values: Iterable | None = None,
-        columns=[]
+        columns=None
     ) -> list[dict[any]] | RepoError:
         """
         Given a table and primary_keys returns all necessary information from the specified columns\n
         Primary Keys have to be in example format -> (("post_id", "community_id"), [("1", "10"), ("2", "15"), ("3", "20")]) or None\n
         Note: In contrast to the normal get_info function it is intended to have acces to other columns via. JOIN.\n
         It is built for more than one post and the return isn't intendet to be formatted into Models\n
+        NOTE: If primary_keys[0] is only 1 value, parse an non-iterable value
+
         NOTE: values 'll be added in order auto-generated primary key values -> specified values
 
         ## joins ##
@@ -202,6 +186,7 @@ class BaseRepo():
         ## Returns: ###
         Returns the sql connector return, in dict format | RepoError.
         """
+        if not columns: columns = []
 
         # JOIN
         join_statement = ""
@@ -223,13 +208,20 @@ class BaseRepo():
                 return "%s"
             
             # converting tuples into format ((1, 2), (3, 4)...)
-            return ", ".join("({})".format(", ".join(add_to_values(v) for v in t)) for t in tuple_list)
+            place_holder_vals = (', '.join(add_to_values(v) for v in t) for t in tuple_list)
+
+            if not one_key:
+                return f"({', '.join(place_holder_vals)})"
+            else:
+                return ", ".join(place_holder_vals)
             
         # PRIMARY KEYS
         if primary_keys and len(primary_keys[0]) > 0:
+            # checking on the len of primary_keys[0]
+            one_key = False if type[primary_keys[0]] in (tuple, list) else True
             pk_condition = "({}) IN ({})".format(
             # Column Names
-            ", ".join(primary_keys[0]),
+            ", ".join(primary_keys[0] if not one_key else (primary_keys[0], )),
 
             # getting the primary key values     
             convert_tuples_format(primary_keys[1])

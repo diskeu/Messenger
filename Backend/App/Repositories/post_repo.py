@@ -54,7 +54,7 @@ class PostRepo(BaseRepo):
     
     def get_post_hotness_intervall(self, post_hotness):
         hotness_formular = ""
-        self.get_all(
-            "messenger.posts",
-            "WHERE (WHERE NOW() - created_at) <= INTERVAL 48 HOUR",
-            hotness_formular)
+        # self.get_all(
+        #     "messenger.posts",
+        #     "WHERE (WHERE NOW() - created_at) <= INTERVAL 48 HOUR",
+        #     hotness_formular)

@@ -14,16 +14,12 @@ class VoteRepo(BaseRepo):
         Given a user and posts, returns the status of the users vote in format dict \n
         -> {post_id: -1 | 1} for all values where user has placed a vote or RepoError
         """
-        condition = "WHERE user_id = %s AND post_id IN ({})".format(
-                ", ".join(
-                    "%s" for _ in range(len(post_ids))
-                )
-            )
-        sql_return_val: list = self.get_all(
-            "messenger.votes",
-            condition,
-            (user_id, *post_ids),
-            "post_id, vote"
+        sql_return_val: list = self.get_all_enriched(
+            table="messenger.votes",
+            where_statement="user_id = %s",
+            primary_keys=("post_id", [post_ids]),
+            columns=["post_id", "vote"],
+            values=[user_id]
         )
         if isinstance(sql_return_val, self.RepoError): return sql_return_val
 
@@ -63,3 +59,9 @@ class VoteRepo(BaseRepo):
         insert_query += " ON DUPLICATE KEY UPDATE vote = %s;"
 
         self.execute_write(insert_query, *insert_vals)
+
+from Backend.App.logger_config import setup_logger
+from Backend.App.Database.connection import connect
+
+v_r = VoteRepo(setup_logger(), connect("/Users/TimJelenz/Desktop/messenger/Backend/Configurations/mysql.conf", "root"))
+v_r.get_users_vote(1002, 22, 44, 32)

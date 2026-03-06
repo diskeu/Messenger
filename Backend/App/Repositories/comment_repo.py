@@ -65,9 +65,3 @@ class CommentRepo(BaseRepo):
         )
         # executing statement
         return self.execute_write(delete_query, *comment_ids)
-    
-from Backend.App.logger_config import setup_logger
-from Backend.App.Database.connection import connect
-
-c_r = CommentRepo(setup_logger(), connect("/Users/TimJelenz/Desktop/messenger/Backend/Configurations/mysql.conf", "root"))
-print(c_r.get_all("messenger.comments"))
